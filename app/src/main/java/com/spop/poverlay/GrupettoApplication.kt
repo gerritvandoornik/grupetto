@@ -60,6 +60,8 @@ class GrupettoApplication : Application() {
             bike, powerMeterManager.reading, sensorScope, android.os.SystemClock::elapsedRealtime
         ) else bike
         bleServer = BleServer(this, bluetoothManager, sensorInterface)
+        com.spop.poverlay.ride.RideStore.init(this)
+        com.spop.poverlay.ride.GoogleDrive.init(this)
         antPlusServer = AntPlusServer(this, sensorInterface)
     }
 

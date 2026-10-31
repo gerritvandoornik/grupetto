@@ -21,6 +21,9 @@ android {
         versionName "v0.0.46"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // Google Drive OAuth client ("TVs and Limited Input devices"), from repo secrets or local env
+        buildConfigField "String", "GDRIVE_CLIENT_ID", "\"${System.getenv('GDRIVE_CLIENT_ID') ?: ''}\""
+        buildConfigField "String", "GDRIVE_CLIENT_SECRET", "\"${System.getenv('GDRIVE_CLIENT_SECRET') ?: ''}\""
         vectorDrawables {
             useSupportLibrary true
         }

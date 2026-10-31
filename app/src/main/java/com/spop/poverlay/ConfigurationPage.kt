@@ -101,6 +101,8 @@ fun ConfigurationPage(viewModel: ConfigurationViewModel) {
                     SettingsTile(if (running) "Overlay · Running" else "Overlay · Ready", Modifier.weight(1f).fillMaxHeight(), Color(0xFF34D399)) {
                         SettingSwitch("Start on boot", boot, viewModel::onAutoStartOnBootClicked)
                         SettingSwitch("Timer when minimized", timer, viewModel::onShowTimerWhenMinimizedClicked)
+                        Spacer(Modifier.weight(1f))
+                        TileActionButton("Rides & Google Drive", { dialog = "rides" })
                     }
                     SettingsTile("Broadcast connections", Modifier.weight(1f).fillMaxHeight(), Color(0xFF60A5FA)) {
                         ConnectionSummary("Bluetooth", if (viewModel.isPreview) "Preview" else if (ble) "On · Grupetto" else "Off", ble)
@@ -186,6 +188,7 @@ fun ConfigurationPage(viewModel: ConfigurationViewModel) {
                 fontSize = 13.sp, color = Color(0xFF9EAEC0))
         }
         "power" -> PowerMeterDialog(viewModel) { dialog = null }
+        "rides" -> com.spop.poverlay.ride.RidesDialog { dialog = null }
         "developer" -> SettingsDialog("Developer · Model emulation", { dialog = null }) {
             Text("Emulation uses simulated sensors and motor control. Broadcasts are disabled. Selecting a model restarts Grupetto.",
                 fontSize = 14.sp, color = Color(0xFF9EAEC0))

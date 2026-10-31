@@ -108,6 +108,9 @@ jobs:
         grep -E "(versionCode|versionName)" app/build.gradle
 
     - name: Build release APK
+      env:
+        GDRIVE_CLIENT_ID: ${{ secrets.GDRIVE_CLIENT_ID }}
+        GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
       run: ./gradlew assembleRelease
 
     - name: List APK outputs

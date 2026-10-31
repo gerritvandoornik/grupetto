@@ -86,6 +86,7 @@ class OverlayService : LifecycleEnabledService() {
     private var touchTargetView: View? = null
     private var windowManager: WindowManager? = null
     private var sensorViewModel: OverlaySensorViewModel? = null
+    private var rideRecorder: com.spop.poverlay.ride.RideRecorder? = null
     private var shifterWindows: FixedShifterWindows? = null
     private var minimizedStateBeforeConfiguration: Boolean? = null
     private val bleServer by lazy { (application as GrupettoApplication).bleServer }
@@ -149,6 +150,8 @@ class OverlayService : LifecycleEnabledService() {
     }
 
     override fun onDestroy() {
+        rideRecorder?.finish()
+        rideRecorder = null
         mutableIsRunning.value = false
         removeOverlayViews()
         releaseWakeLock()
@@ -191,6 +194,12 @@ class OverlayService : LifecycleEnabledService() {
         this.sensorViewModel = sensorViewModel
         // Wire up timer to auto-start/pause based on movement
         timerViewModel.observeMovement(sensorViewModel.isMoving, sensorViewModel.sessionReset)
+
+        // Save each ride as a FIT file (and upload it to Google Drive when connected)
+        rideRecorder?.finish()
+        rideRecorder = com.spop.poverlay.ride.RideRecorder(
+            sensorInterface, timerViewModel.elapsedSeconds, this
+        ).also { it.start() }
 
         val dialogViewModel = OverlayDialogViewModel(
             screenSize,
